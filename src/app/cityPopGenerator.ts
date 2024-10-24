@@ -25,7 +25,9 @@ class CityPopGenerator {
   }
 
   private createVoicing(root: number, template: string, complexity: number): number[] {
-    return this.chordToNotes[template as keyof typeof this.chordToNotes] || [];
+    // Example usage of complexity (this is just a placeholder logic)
+    const notes = this.chordToNotes[template as keyof typeof this.chordToNotes] || [];
+    return notes.slice(0, Math.min(notes.length, Math.floor(complexity * notes.length))); // Adjust voicing based on complexity
   }
 
   private calculateVelocityMod(index: number, length: number, tension: number): number {
@@ -43,6 +45,7 @@ class CityPopGenerator {
     midi.header.setTempo(tempo);
     track.channel = 0;
     
+    let prevRoot: number | null = null;
     let time = 0;
     
     for (let i = 0; i < length; i++) {
@@ -50,8 +53,9 @@ class CityPopGenerator {
       const chord = progression[i % progression.length];
       const root = this.chordToNotes[chord as keyof typeof this.chordToNotes][0];
       const template = chord;
+      const complexity = Math.random();
       
-      const notes = this.createVoicing(root, template, Math.random());
+      const notes = this.createVoicing(root, template, complexity);
       const timingFeel = Math.max(0, (Math.random() * 0.04));
       const velocityMod = this.calculateVelocityMod(i, length, tensionArc[i]);
       
@@ -72,6 +76,7 @@ class CityPopGenerator {
       }
       
       time += 2;
+      prevRoot = root;
     }
 
     return {
