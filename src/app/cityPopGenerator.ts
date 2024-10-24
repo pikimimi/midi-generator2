@@ -43,7 +43,6 @@ class CityPopGenerator {
     midi.header.setTempo(tempo);
     track.channel = 0;
     
-    let prevRoot: number | null = null;
     let time = 0;
     
     for (let i = 0; i < length; i++) {
@@ -51,9 +50,8 @@ class CityPopGenerator {
       const chord = progression[i % progression.length];
       const root = this.chordToNotes[chord as keyof typeof this.chordToNotes][0];
       const template = chord;
-      const complexity = Math.random();
       
-      const notes = this.createVoicing(root, template, complexity);
+      const notes = this.createVoicing(root, template, Math.random());
       const timingFeel = Math.max(0, (Math.random() * 0.04));
       const velocityMod = this.calculateVelocityMod(i, length, tensionArc[i]);
       
@@ -74,7 +72,6 @@ class CityPopGenerator {
       }
       
       time += 2;
-      prevRoot = root;
     }
 
     return {
