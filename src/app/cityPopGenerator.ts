@@ -76,6 +76,13 @@ class CityPopGenerator {
       }
       
       time += 2;
+      
+      // Example usage of prevRoot
+      if (prevRoot !== null && prevRoot !== root) {
+        // Do something if the root has changed
+      }
+      
+      // Update prevRoot for the next iteration
       prevRoot = root;
     }
 
